@@ -8,6 +8,9 @@ import java.awt.Color;
 
 public class TTTGui
 { 
+  /*
+   * DEPRECATED: Old method for indicating the winner of a grid
+   *    (replaced by shadeBackground)
   public static void colorBorder(int row, int col, boolean isX)
   {
     StdDraw.setPenRadius(0.002);
@@ -27,6 +30,7 @@ public class TTTGui
       StdDraw.line(3*col - 0.5, -3*row - i - 0.5, 3*col + 2.5, -3*row - i - 0.5);
     }
   }
+  */
   
 	public static void drawBoard(Grid[][] fullGrid, Grid metaGrid)
 	{
@@ -48,10 +52,11 @@ public class TTTGui
 	  StdDraw.setPenRadius();
       StdDraw.setPenColor(StdDraw.BLACK);
 	  
+      //draw grid lines
 	  for (int i = 0; i < 10; i++)
 	  {
 	    if (i%3 == 0)
-	      StdDraw.setPenRadius(0.005);
+	      StdDraw.setPenRadius(0.005); //every third line is thicker
 	    else
 	      StdDraw.setPenRadius();
 	    
@@ -59,6 +64,9 @@ public class TTTGui
 	    StdDraw.line(-0.5, -i + 0.5, 8.5, -i + 0.5);
 	  }
 	  
+	  refreshMarks(fullGrid);
+	  
+	  /*
 	  for (int bigR = 0; bigR < 3; bigR++)
 	    for (int bigC = 0; bigC < 3; bigC++)
 	      for (int smallR = 0; smallR < 3; smallR++)
@@ -78,6 +86,7 @@ public class TTTGui
 	              drawMark(bigR, bigC, smallR, smallC, false, StdDraw.BLUE);
 	              break;
 	          }
+	  */
 	}
 	
 	public static void drawMark(int bigR, int bigC, int smallR, int smallC, boolean isX, Color col)
@@ -164,6 +173,7 @@ public class TTTGui
               }
 	}
 	
+	//provides semi-transparent background shading for grids that have been won
 	public static void shadeBackground(int row, int col, boolean isX)
     {
       StdDraw.setPenRadius();

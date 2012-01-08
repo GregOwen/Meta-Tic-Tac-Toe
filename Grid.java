@@ -1,28 +1,30 @@
 /*
  * Written By: Gregory Owen
  * Date: 12/26/11
- * Represents a grid for use in Meta Tic Tac Toe
- * X is 1, O is -1, blank is 0
+ * Represents a grid for use in Meta Tic Tac Toe:
+ *  0 is a blank slot
+ *  positive is an X
+ *  negative is an O
+ *  1 means black
+ *  2 means colored (red for X, blue for O)
  */
 
 public class Grid
 {
   private int[][] squares;
   private boolean isWon;
+  private int numMarks;
   
   public Grid()
   {
     squares = new int[3][3];
     isWon = false;
+    numMarks = 0;
   }
   
   public void addMark(int r, int c, boolean isX)
-  {
-    if (r > 2 || r < 0 || c > 2 || c < 0)
-    {
-      System.out.println("ERROR at addX line 18");
-      return;
-    }
+  { 
+    numMarks++; //record that a mark has been added
     
     if (isX)
       squares[r][c] = 1;
@@ -30,12 +32,17 @@ public class Grid
       squares[r][c] = -1;
   }
   
-  //checks if the most recent move created a win in this grid
+  /*
+   * checks if the most recent move created a win in this grid
+   * if the row, column, or diagonal of the last move has a sum
+   *  with absolute value of +/- 3, then a win is registered
+   */
   public boolean checkWin(int lastR, int lastC)
   {
     if (isWon)
-      return false;
+      return false; //you can't win the same grid twice
     
+    //first check the row
     int rowSum = squares[lastR][0] + squares[lastR][1] + squares[lastR][2];
     if (rowSum > 2 || rowSum < -2)
     {
@@ -43,6 +50,7 @@ public class Grid
       return true;
     }
     
+    //then check the column
     int colSum = squares[0][lastC] + squares[1][lastC] + squares[2][lastC];
     if (colSum > 2 || colSum < -2)
     {
@@ -86,6 +94,11 @@ public class Grid
   public int get(int r, int c)
   {
     return squares[r][c];
+  }
+  
+  public boolean isFull()
+  {
+    return numMarks == 9;
   }
   
   //doubles the value of each mark in the line between the given endpoints

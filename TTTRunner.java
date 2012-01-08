@@ -29,6 +29,11 @@ public class TTTRunner
     TTTGui.drawBoard(bigGrid, gameGrid);
   }
   
+  /*
+   * Records position of mouse clicks,
+   *  makes mark if appropriate,
+   *  checks win conditions for small and large grids
+   */
   public void clickListener(boolean isX)
   {
     while (true)
@@ -44,7 +49,15 @@ public class TTTRunner
         int smallR = coordToSmall(y, false);
         int smallC = coordToSmall(x, true);
         
-        if (bigGrid[bigR][bigC].get(smallR, smallC) == 0 && (turn == 1 || (bigR == lastR && bigC == lastC)))
+        /*
+         * Marks can only be added if the following criteria are met:
+         *  1. The square to be marked is empty AND
+         *      a. It is the first turn OR
+         *      b. The new mark is placed in the correct square of the meta-grid OR
+         *      c. The correct grid is full
+         */
+        if (bigGrid[bigR][bigC].get(smallR, smallC) == 0 
+            && (turn == 1 || (bigR == lastR && bigC == lastC) || bigGrid[lastR][lastC].isFull()))
         {
           bigGrid[bigR][bigC].addMark(smallR, smallC, isX);
           TTTGui.refreshMarks(bigGrid);
@@ -62,9 +75,9 @@ public class TTTRunner
               isWon = true;
               System.out.println("The game is over.");
               if (isX)
-                System.out.print("X ");
+                System.out.print("X");
               else
-                System.out.print("Y ");
+                System.out.print("O");
               
               System.out.println(" is the winner!");
             }
@@ -79,9 +92,8 @@ public class TTTRunner
   }
   
   //converts an x or y mouse coordinate into an index in bigGrid
-  //the vertical axis goes from -4 to 4 from top to bottom,
-  // but in arrays row 0 is the top row, so the y values must
-  // be inverted
+  // y-values must be inverted becuase array indices are positive
+  // but y-coordinates are negative
   public static int coordToBig(int coord, boolean isX)
   {
     if (!isX)
@@ -110,9 +122,9 @@ public class TTTRunner
     return coord%3;
   }
   
+  //returns the int value closest to the value of dub
   public static int round(double dub)
   {
-    //if()
     if(dub < 0)
       return (int) (dub - 0.5);
     else
