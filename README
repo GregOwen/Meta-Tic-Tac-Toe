@@ -24,3 +24,10 @@ center tic-tac-toe board, the second player would have to place his or her
 next mark in one of the slots of the top left tic-tac-toe board.
 Note that it is perfectly legal (and, in some cases, a good strategy) to
 send your opponent to a tic-tac-toe board that has already been won.
+
+
+UPDATE 1/8/12:
+
+Fixed bug that would stall game:
+It is possible for a player to be legally directed to play in a grid that is already full. The first player may play in any grid, leaving 8 open slots in that grid however, there are always 9 slots on the board that will direct a player to play in a given grid. This means that it is always possible for a player to be directed to a full grid.
+The game previously did not take this into account, and would not let the player play anywhere, stalling the game indefinitely. Under the new rules, any player directed to a full grid will have their pick of the whole board. This may be too powerful, so another fix may be necessary.
